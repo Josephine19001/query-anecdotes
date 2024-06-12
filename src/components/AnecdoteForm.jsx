@@ -5,19 +5,20 @@ import { getId } from '../utils';
 const AnecdoteForm = () => {
   const queryClient = useQueryClient();
 
-  // const newAnecdoteMutation = useMutation(createAnecdote, {
-  //   onSuccess: (newAnecdote) => {
-  //     const anecdotes = queryClient.getQueryData(['anecdotes']);
-  //     queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote));
-  //   },
-  //   onError: () => {}
-  // });
+  const newAnecdoteMutation = useMutation({
+    mutationFn: createAnecdote,
+    onSuccess: (newAnecdote) => {
+      const anecdotes = queryClient.getQueryData(['anecdotes']);
+      queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote));
+    },
+    onError: () => {}
+  });
 
   const onCreate = (event) => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     event.target.anecdote.value = '';
-    // newAnecdoteMutation.mutate({ id: getId(), content, votes: 0 });
+    newAnecdoteMutation.mutate({ id: getId(), content, votes: 0 });
   };
 
   return (

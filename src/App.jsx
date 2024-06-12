@@ -9,20 +9,21 @@ const App = () => {
   const queryClient = useQueryClient();
   const { notification, dispatch } = useNotification();
 
-  // const updateVoteMutation = useMutation(updateAnecdote, {
-  //   onSuccess: (updatedAnecdote) => {
-  //     const anecdotes = queryClient.getQueryData(['anecdotes']);
-  //     queryClient.setQueryData(
-  //       ['anecdotes'],
-  //       anecdotes.map((anecdote) =>
-  //         anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
-  //       )
-  //     );
-  //   }
-  // });
+  const updateVoteMutation = useMutation({
+    mutationFn: updateAnecdote,
+    onSuccess: (updatedAnecdote) => {
+      const anecdotes = queryClient.getQueryData(['anecdotes']);
+      queryClient.setQueryData(
+        ['anecdotes'],
+        anecdotes.map((anecdote) =>
+          anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
+        )
+      );
+    }
+  });
 
   const handleVote = (anecdote) => {
-    // updateVoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 });
+    updateVoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 });
 
     dispatch({
       type: 'showNotification',
